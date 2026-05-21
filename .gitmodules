@@ -1,0 +1,15 @@
+[submodule "zkid"]
+	path = zkid
+	url = https://github.com/zkmopro/zkid
+[submodule "go-zkid-verifier"]
+	path = go-zkid-verifier
+	url = https://github.com/zkmopro/go-zkid-verifier
+[submodule "moica-revocation-smt"]
+	path = moica-revocation-smt
+	url = https://github.com/moven0831/moica-revocation-smt
+[submodule "OpenACSwift"]
+	path = OpenACSwift
+	url = https://github.com/zkmopro/OpenACSwift
+[submodule "OpenACKotlin"]
+	path = OpenACKotlin
+	url = https://github.com/zkmopro/OpenACKotlin
