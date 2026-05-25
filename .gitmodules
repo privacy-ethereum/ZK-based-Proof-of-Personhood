@@ -13,3 +13,9 @@
 [submodule "OpenACKotlin"]
 	path = OpenACKotlin
 	url = https://github.com/zkmopro/OpenACKotlin
+[submodule "OpenACExampleApp"]
+	path = OpenACExampleApp
+	url = https://github.com/zkmopro/OpenACExampleApp
+[submodule "OpenACAndroidExample"]
+	path = OpenACAndroidExample
+	url = https://github.com/zkmopro/OpenACAndroidExample

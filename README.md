@@ -13,8 +13,10 @@ A proof-of-concept for ZK-based proof of personhood on BBS (Bulletin Board Syste
 ├── zkid/                    # [REUSABLE] ZK circuits and proof generation core (Circom + Spartan2 / Hyrax)
 ├── go-zkid-verifier/        # [REUSABLE CORE / PTT-INTEGRATED] Go server — challenge issuance, proof verification, nullifier deduplication
 ├── moica-revocation-smt/    # [REUSABLE] Revocation SMT pipeline — MOICA CRL → on-chain SMT root (Arbitrum Sepolia)
-├── OpenACSwift/             # [REUSABLE] iOS Swift bindings for on-device proof generation
-├── OpenACKotlin/            # [REUSABLE] Android Kotlin bindings for on-device proof generation
+├── OpenACSwift/             # [REUSABLE FOR x509 CERT] iOS Swift bindings for x509-cert-based on-device proof generation
+├── OpenACKotlin/            # [REUSABLE FOR x509 CERT] Android Kotlin bindings for x509-cert-based on-device proof generation
+├── OpenACExampleApp/        # [EXAMPLE] iOS sample app — full OpenAC ZK pipeline end-to-end
+├── OpenACAndroidExample/    # [EXAMPLE] Android sample app — full OpenAC ZK pipeline end-to-end
 └── assets/                  # Flow diagrams
 ```
 
@@ -27,18 +29,20 @@ The table below labels each functional piece, its submodule, and whether it is a
 | Component | Where it lives | Reusable or PTT-specific |
 |-----------|---------------|--------------------------|
 | **Proof generation** (cert-chain + user-sig circuits, Circom + Spartan2/Hyrax) | `zkid/wallet-unit-poc/` | Reusable — any OpenAC relying party |
-| **Proof generation — iOS** (Swift FFI + on-device proving) | `OpenACSwift/` | Reusable — any iOS app integrating OpenAC |
-| **Proof generation — Android** (Kotlin/JNI FFI + on-device proving) | `OpenACKotlin/` | Reusable — any Android app integrating OpenAC |
+| **Proof generation — iOS** (Swift FFI + on-device proving, x509 cert circuits) | `OpenACSwift/` | Reusable for any x509 certificate-based identity scheme using the same circuits |
+| **Proof generation — Android** (Kotlin/JNI FFI + on-device proving, x509 cert circuits) | `OpenACKotlin/` | Reusable for any x509 certificate-based identity scheme using the same circuits |
 | **Proof verification** (Rust FFI → Go, Spartan2 verifier) | `go-zkid-verifier/verifier/` | Reusable — exposes `linkverify.Service` for any backend |
 | **Nullifier generation** (derived inside `device_sig` circuit from `APP_ID` + cardholder key) | `zkid/wallet-unit-poc/circom/` | Reusable design; `APP_ID` is per–relying party |
 | **Challenge / nonce handling** (per-session 254-bit field element, 5-min TTL, replay protection) | `go-zkid-verifier/challenge/` + `httpapi/challenge.go` | Reusable pattern; `APP_ID` is PTT-specific |
 | **Revocation SMT — server** (CRL fetch, Poseidon SMT, REST/gRPC proofs, on-chain root posting) | `moica-revocation-smt/server/` | Reusable — any MOICA-issuer integration |
-| **Revocation SMT — client** (offline snapshot + proof generation, iOS/Android/WASM) | `moica-revocation-smt/` + `OpenACSwift/` | Reusable — any mobile or web client |
+| **Revocation SMT — client** (offline snapshot + proof generation, iOS/Android/WASM) | `moica-revocation-smt/` + `OpenACSwift/` | Reusable — any mobile or web client using MOICA |
 | **Revocation SMT — on-chain root** (`SMTRootStorage.sol`, Arbitrum Sepolia) | `moica-revocation-smt/onchain-contract/` | Reusable — any verifier can read the root |
 | **Revocation root cache** (on-chain primary → GitHub-release fallback, background refresh) | `go-zkid-verifier/smtroot/` | Reusable — decoupled provider interface |
 | **Issuer cert trust** (MOICA-G2/G3 moduli, embedded + HTTPS refresh, GRCA chain-validate) | `go-zkid-verifier/issuercert/` | Reusable — applicable to any MOICA verifier |
 | **PTT backend integration** (HTTP/gRPC server, `link-verify` endpoint, SQLite deduplication) | `go-zkid-verifier/httpapi/` + `grpc/` + `store/` | PTT-specific deployment; core logic is reusable |
-| **Mobile app integration** (BBS app fetches MOICA cert, wraps VC, calls Swift/Kotlin FFI) | `OpenACSwift/` + `OpenACKotlin/` | Integration pattern is reusable; PTT app shell is PTT-specific |
+| **Mobile app integration** (BBS app fetches MOICA cert, wraps VC, calls Swift/Kotlin FFI) | `OpenACSwift/` + `OpenACKotlin/` | Reusable for any x509 cert-based identity scheme; PTT app shell is PTT-specific |
+| **iOS example app** (full end-to-end demo: TW FidO auth → circuit download → ZK prove → link-verify) | `OpenACExampleApp/` | Reusable reference implementation for any OpenAC iOS integration |
+| **Android example app** (full end-to-end demo: TW FidO auth → circuit download → ZK prove → link-verify) | `OpenACAndroidExample/` | Reusable reference implementation for any OpenAC Android integration |
 
 ---
 
@@ -89,7 +93,7 @@ The table below labels each functional piece, its submodule, and whether it is a
 ```
 
 **Boundary summary:**
-- Everything above the "PTT-SPECIFIC INTEGRATION" line is reusable by any relying party implementing OpenAC.
+- Everything above the "PTT-SPECIFIC INTEGRATION" line is reusable by any relying party implementing OpenAC, with one caveat: `OpenACSwift` and `OpenACKotlin` are built for x509 certificate-based identity circuits (`cert_chain_rs4096`, `device_sig_rs2048`). They are drop-in reusable for any x509 cert scheme; for other circuit designs the mobile bindings must be regenerated via mopro.
 - The PTT-specific surface is narrow: the `APP_ID` env var, the SQLite deduplication store, and the HTTP/gRPC transport wiring. Swapping these out adapts the verifier to a different service.
 
 ---
@@ -101,8 +105,10 @@ The table below labels each functional piece, its submodule, and whether it is a
 | [zkid](https://github.com/zkmopro/zkid) | ZK circuits (`cert_chain_rs4096`, `device_sig_rs2048`), Spartan2/Hyrax prover, Circom witness calculator | [PSE zkID](https://github.com/privacy-ethereum/zkID) |
 | [go-zkid-verifier](https://github.com/zkmopro/go-zkid-verifier) | Go backend: challenge/nonce, ZK proof verification (FFI → Rust), nullifier dedup, SMT root and issuer-cert trust checks | — |
 | [moica-revocation-smt](https://github.com/moven0831/moica-revocation-smt) | MOICA CRL → Poseidon SMT → REST/gRPC proofs → on-chain root (Arbitrum Sepolia `0xc461…AFFA`); binary snapshots for offline client use | — |
-| [OpenACSwift](https://github.com/zkmopro/OpenACSwift) | Swift package (iOS 16+): on-device proof generation, offline SMT revocation check, circuit-input preparation | [mopro](https://github.com/zkmopro/mopro) |
-| [OpenACKotlin](https://github.com/zkmopro/OpenACKotlin) | Kotlin/Android library (JNI): on-device proof generation, circuit-input preparation | [mopro](https://github.com/zkmopro/mopro) |
+| [OpenACSwift](https://github.com/zkmopro/OpenACSwift) | Swift package (iOS 16+): on-device proof generation for x509 cert circuits (`proveCertChainRs4096`, `proveUserSigRs2048`), offline SMT revocation check, circuit-input preparation. Reusable by any iOS app built around an x509 certificate-based identity scheme. | [mopro](https://github.com/zkmopro/mopro) |
+| [OpenACKotlin](https://github.com/zkmopro/OpenACKotlin) | Kotlin/Android library (JNI): on-device proof generation for x509 cert circuits (`proveCertChainRs4096`, `proveUserSigRs2048`), circuit-input preparation. Reusable by any Android app built around an x509 certificate-based identity scheme. | [mopro](https://github.com/zkmopro/mopro) |
+| [OpenACExampleApp](https://github.com/zkmopro/OpenACExampleApp) | iOS sample app: TW FidO / MOICA auth, circuit-key download, Groth16 ZK proof generation (`proveCertChainRs4096`, `proveUserSigRs2048`), and `POST /link-verify` submission | [OpenACSwift](https://github.com/zkmopro/OpenACSwift) |
+| [OpenACAndroidExample](https://github.com/zkmopro/OpenACAndroidExample) | Android sample app (Jetpack Compose): TW FidO / MOICA auth, circuit-key download, ZK proof generation (`proveCertChainRs4096`, `proveUserSigRs2048`), and `POST /link-verify` submission | [OpenACKotlin](https://github.com/zkmopro/OpenACKotlin) |
 
 ---
 
@@ -148,7 +154,7 @@ go-zkid-verifier
 To adapt this integration for a non-PTT relying party:
 
 1. **Circuits** — use `zkid` unchanged; verifying keys are published on [zkID releases](https://github.com/zkmopro/zkID/releases/tag/latest).
-2. **Mobile bindings** — add `OpenACSwift` (SPM) or `OpenACKotlin` (JitPack) as dependencies; call `generateCertChainRs4096Input → setupKeys → prove* → linkVerify`.
+2. **Mobile bindings** — add `OpenACSwift` (SPM) or `OpenACKotlin` (JitPack) as dependencies if your identity scheme is x509 certificate-based; call `generateCertChainRs4096Input → setupKeys → prove* → linkVerify`. If your circuits differ from the x509 cert design, regenerate the bindings via mopro against your own circuit artifacts.
 3. **Revocation** — consume the [moica-revocation-smt](https://github.com/moven0831/moica-revocation-smt) REST/gRPC proof API, or load a binary snapshot locally (WASM / iOS / Android).
 4. **Backend verifier** — deploy `go-zkid-verifier` with `APP_ID` set to your relying-party identifier (31-char hex); wire `linkverify.Service` into your own transport or use the bundled HTTP/gRPC server.
 5. **What to change** — only `APP_ID`, your session store backend, and any BBS-specific user-DB update logic. The ZK circuit, mobile bindings, and SMT infrastructure are drop-in.
@@ -176,3 +182,5 @@ See each submodule's `README.md` for build and deployment instructions:
 - [`moica-revocation-smt/README.md`](./moica-revocation-smt/README.md)
 - [`OpenACSwift/README.md`](./OpenACSwift/README.md)
 - [`OpenACKotlin/README.md`](./OpenACKotlin/README.md)
+- [`OpenACExampleApp/README.md`](./OpenACExampleApp/README.md)
+- [`OpenACAndroidExample/README.md`](./OpenACAndroidExample/README.md)
