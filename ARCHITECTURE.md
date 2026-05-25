@@ -1,6 +1,6 @@
-# ZK-based Human Verification
+# ZK-based Proof of Personhood for Online Forum
 
-This repo aims for exploring the PoC of ZK-based human verification for BBS (Bulletin Board System) platforms. The tech is targeting for using [OpenAC](https://github.com/privacy-ethereum/zkID/blob/main/paper/zkID.pdf) and [its implementation from PSE's zkID team](https://github.com/privacy-ethereum/zkID/tree/main/wallet-unit-poc) to verify Taiwan's Citizenship Certificate.
+This repo aims for exploring the PoC of ZK-based proof of personhood for BBS (Bulletin Board System) platforms. The tech is targeting for using [OpenAC](https://github.com/privacy-ethereum/zkID/blob/main/paper/zkID.pdf) and [its implementation from PSE's zkID team](https://github.com/privacy-ethereum/zkID/tree/main/wallet-unit-poc) to verify Taiwan's Citizenship Certificate.
 
 ## System Architecture for OpenAC Integration
 

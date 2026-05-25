@@ -1,6 +1,6 @@
-# ZK-based Human Verification
+# ZK-based Proof of Personhood for Online Forum
 
-A proof-of-concept for ZK-based human verification on BBS (Bulletin Board System) platforms — specifically PTT — using [OpenAC / zkID](https://github.com/privacy-ethereum/zkID/blob/main/paper/zkID.pdf) and Taiwan's mobile citizenship certificate (MOICA).
+A proof-of-concept for ZK-based proof of personhood on BBS (Bulletin Board System) platforms — specifically PTT — using [OpenAC / zkID](https://github.com/privacy-ethereum/zkID/blob/main/paper/zkID.pdf) and Taiwan's mobile citizenship certificate (MOICA).
 
 > For flow diagrams and architecture decisions, see [ARCHITECTURE.md](./ARCHITECTURE.md).
 
@@ -125,7 +125,7 @@ go-zkid-verifier
   9. Check app_id matches configured PTT APP_ID
   10. Check challenge matches issued nonce (anti-replay)
   11. Check nullifier is not already recorded (one-time-per-credential)
-  12. Return {verified: true, nullifier} → BBS server marks user as human-verified
+  12. Return {verified: true, nullifier} → BBS server marks user as personhood-verified
 ```
 
 ---
