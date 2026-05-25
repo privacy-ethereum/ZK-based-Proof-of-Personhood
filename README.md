@@ -100,15 +100,15 @@ The table below labels each functional piece, its submodule, and whether it is a
 
 ## Submodules
 
-| Submodule | Role | Upstream |
-|-----------|------|----------|
-| [zkid](https://github.com/zkmopro/zkid) | ZK circuits (`cert_chain_rs4096`, `device_sig_rs2048`), Spartan2/Hyrax prover, Circom witness calculator | [PSE zkID](https://github.com/privacy-ethereum/zkID) |
-| [go-zkid-verifier](https://github.com/zkmopro/go-zkid-verifier) | Go backend: challenge/nonce, ZK proof verification (FFI → Rust), nullifier dedup, SMT root and issuer-cert trust checks | — |
-| [moica-revocation-smt](https://github.com/moven0831/moica-revocation-smt) | MOICA CRL → Poseidon SMT → REST/gRPC proofs → on-chain root (Arbitrum Sepolia `0xc461…AFFA`); binary snapshots for offline client use | — |
-| [OpenACSwift](https://github.com/zkmopro/OpenACSwift) | Swift package (iOS 16+): on-device proof generation for x509 cert circuits (`proveCertChainRs4096`, `proveUserSigRs2048`), offline SMT revocation check, circuit-input preparation. Reusable by any iOS app built around an x509 certificate-based identity scheme. | [mopro](https://github.com/zkmopro/mopro) |
-| [OpenACKotlin](https://github.com/zkmopro/OpenACKotlin) | Kotlin/Android library (JNI): on-device proof generation for x509 cert circuits (`proveCertChainRs4096`, `proveUserSigRs2048`), circuit-input preparation. Reusable by any Android app built around an x509 certificate-based identity scheme. | [mopro](https://github.com/zkmopro/mopro) |
-| [OpenACExampleApp](https://github.com/zkmopro/OpenACExampleApp) | iOS sample app: TW FidO / MOICA auth, circuit-key download, Groth16 ZK proof generation (`proveCertChainRs4096`, `proveUserSigRs2048`), and `POST /link-verify` submission | [OpenACSwift](https://github.com/zkmopro/OpenACSwift) |
-| [OpenACAndroidExample](https://github.com/zkmopro/OpenACAndroidExample) | Android sample app (Jetpack Compose): TW FidO / MOICA auth, circuit-key download, ZK proof generation (`proveCertChainRs4096`, `proveUserSigRs2048`), and `POST /link-verify` submission | [OpenACKotlin](https://github.com/zkmopro/OpenACKotlin) |
+| Submodule | Role | Upstream | Pinned commit |
+|-----------|------|----------|---------------|
+| [zkid](https://github.com/zkmopro/zkid) | ZK circuits (`cert_chain_rs4096`, `device_sig_rs2048`), Spartan2/Hyrax prover, Circom witness calculator | [PSE zkID](https://github.com/privacy-ethereum/zkID) | [`418f1f6`](https://github.com/zkmopro/zkid/commit/418f1f6f397520d73a1dd2781ebfc6f93440a77c) |
+| [go-zkid-verifier](https://github.com/zkmopro/go-zkid-verifier) | Go backend: challenge/nonce, ZK proof verification (FFI → Rust), nullifier dedup, SMT root and issuer-cert trust checks | — | [`78fc2b4`](https://github.com/zkmopro/go-zkid-verifier/commit/78fc2b4810ab16ed7872aade19645eb3b4dd8b4a) |
+| [moica-revocation-smt](https://github.com/moven0831/moica-revocation-smt) | MOICA CRL → Poseidon SMT → REST/gRPC proofs → on-chain root (Arbitrum Sepolia `0xc461…AFFA`); binary snapshots for offline client use | — | [`81fb1a1`](https://github.com/moven0831/moica-revocation-smt/commit/81fb1a109f26d4de73caaa76e02ce38a961a895a) |
+| [OpenACSwift](https://github.com/zkmopro/OpenACSwift) | Swift package (iOS 16+): on-device proof generation for x509 cert circuits (`proveCertChainRs4096`, `proveUserSigRs2048`), offline SMT revocation check, circuit-input preparation. Reusable by any iOS app built around an x509 certificate-based identity scheme. | [mopro](https://github.com/zkmopro/mopro) | [`b092970`](https://github.com/zkmopro/OpenACSwift/commit/b0929701e7559150239c9669e2ddc9d6e073d696) |
+| [OpenACKotlin](https://github.com/zkmopro/OpenACKotlin) | Kotlin/Android library (JNI): on-device proof generation for x509 cert circuits (`proveCertChainRs4096`, `proveUserSigRs2048`), circuit-input preparation. Reusable by any Android app built around an x509 certificate-based identity scheme. | [mopro](https://github.com/zkmopro/mopro) | [`612bd46`](https://github.com/zkmopro/OpenACKotlin/commit/612bd46172fe2573dced1cf1eb27305b1206a521) |
+| [OpenACExampleApp](https://github.com/zkmopro/OpenACExampleApp) | iOS sample app: TW FidO / MOICA auth, circuit-key download, Groth16 ZK proof generation (`proveCertChainRs4096`, `proveUserSigRs2048`), and `POST /link-verify` submission | [OpenACSwift](https://github.com/zkmopro/OpenACSwift) | [`20ef1de`](https://github.com/zkmopro/OpenACExampleApp/commit/20ef1de66086b121cf90c996016cb5c15b7dd82f) |
+| [OpenACAndroidExample](https://github.com/zkmopro/OpenACAndroidExample) | Android sample app (Jetpack Compose): TW FidO / MOICA auth, circuit-key download, ZK proof generation (`proveCertChainRs4096`, `proveUserSigRs2048`), and `POST /link-verify` submission | [OpenACKotlin](https://github.com/zkmopro/OpenACKotlin) | [`303c250`](https://github.com/zkmopro/OpenACAndroidExample/commit/303c25052ec35f64c84c49778aaf62720f91445e) |
 
 ---
 
