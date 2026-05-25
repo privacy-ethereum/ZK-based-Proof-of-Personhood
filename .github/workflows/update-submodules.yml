@@ -1,0 +1,57 @@
+name: Update Submodules
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # daily at 00:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fetch latest submodule commits
+        run: git submodule update --remote --merge
+
+      - name: Sync README pinned commits
+        run: |
+          python3 - <<'PYEOF'
+          import subprocess, re
+
+          with open('README.md') as f:
+              content = f.read()
+
+          info = subprocess.run(
+              ['git', 'submodule', 'foreach', '--quiet',
+               'printf "%s %s %s\n" "$name" "$(git rev-parse --short HEAD)" "$(git rev-parse HEAD)"'],
+              capture_output=True, text=True, check=True
+          )
+
+          for line in info.stdout.strip().splitlines():
+              name, short_sha, full_sha = line.split()
+              content = re.sub(
+                  rf'\[`[0-9a-f]{{7,}}`\]\((https://github\.com/[^/]+/{re.escape(name)}/commit/)[0-9a-f]{{40}}\)',
+                  rf'[`{short_sha}`](\g<1>{full_sha})',
+                  content
+              )
+
+          with open('README.md', 'w') as f:
+              f.write(content)
+          PYEOF
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -u
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: update submodules to latest commits"
+            git push
+          fi
