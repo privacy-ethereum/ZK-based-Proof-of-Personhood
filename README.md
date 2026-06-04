@@ -3,6 +3,7 @@
 A proof-of-concept for ZK-based proof of personhood on BBS (Bulletin Board System) platforms — specifically PTT — using [OpenAC / zkID](https://github.com/privacy-ethereum/zkID/blob/main/paper/zkID.pdf) and Taiwan's mobile citizenship certificate (MOICA).
 
 > For flow diagrams and architecture decisions, see [ARCHITECTURE.md](./ARCHITECTURE.md).
+> For the formal ZK proof-of-personhood specification (circuit design, public inputs, nullifier scheme, and security properties), see the [spec](https://github.com/privacy-ethereum/zkID/tree/main/specs/2-zk-proof-of-personhood).
 
 ---
 
@@ -141,6 +142,7 @@ go-zkid-verifier
 | Resource | Link |
 |----------|------|
 | OpenAC / zkID paper | [zkID.pdf](https://github.com/privacy-ethereum/zkID/blob/main/paper/zkID.pdf) |
+| ZK proof-of-personhood spec (circuit design, public inputs, nullifier scheme, security properties) | [specs/2-zk-proof-of-personhood](https://github.com/privacy-ethereum/zkID/tree/main/specs/2-zk-proof-of-personhood) |
 | PSE zkID team (upstream wallet-unit-poc) | [privacy-ethereum/zkID](https://github.com/privacy-ethereum/zkID/tree/main/wallet-unit-poc) |
 | mopro (mobile ZK framework) | [zkmopro/mopro](https://github.com/zkmopro/mopro) |
 | zkID 2026 roadmap | [Notion](https://pse-team.notion.site/zkID-2026-Roadmap-2fdd57e8dd7e80f48a37c24e9fbe09d6) |
