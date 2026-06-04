@@ -167,12 +167,14 @@ To adapt this integration for a non-PTT relying party:
 
 ```bash
 git clone --recurse-submodules https://github.com/privacy-ethereum/ZK-based-Proof-of-Personhood.git
+cd ZK-based-Proof-of-Personhood
 ```
 
 If already cloned:
 
 ```bash
 git submodule update --init --recursive
+cd ZK-based-Proof-of-Personhood
 ```
 
 ### 1. Install Prerequisites
