@@ -1,6 +1,7 @@
 [submodule "zkid"]
 	path = zkid
-	url = https://github.com/zkmopro/zkid
+	url = https://github.com/privacy-ethereum/zkID
+	branch = RSA-X.509-Cert
 [submodule "go-zkid-verifier"]
 	path = go-zkid-verifier
 	url = https://github.com/zkmopro/go-zkid-verifier
