@@ -174,7 +174,6 @@ If already cloned:
 
 ```bash
 git submodule update --init --recursive
-cd ZK-based-Proof-of-Personhood
 ```
 
 ### 1. Install Prerequisites
