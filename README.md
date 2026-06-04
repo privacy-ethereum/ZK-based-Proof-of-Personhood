@@ -187,7 +187,7 @@ git submodule update --init --recursive
 cd zkid/wallet-unit-poc/circom
 ```
 
-See [`zkid/wallet-unit-poc/circom/README.md`](./zkid/wallet-unit-poc/circom/README.md) for full compilation instructions.
+See [`zkid/wallet-unit-poc/circom/README.md`](https://github.com/privacy-ethereum/zkID/blob/RSA-X.509-Cert/wallet-unit-poc/circom/README.md) for full compilation instructions.
 
 ### 3. Run E2E Tests
 
@@ -195,7 +195,7 @@ See [`zkid/wallet-unit-poc/circom/README.md`](./zkid/wallet-unit-poc/circom/READ
 cd zkid/wallet-unit-poc/ecdsa-spartan2
 ```
 
-See [`zkid/wallet-unit-poc/ecdsa-spartan2/README.md`](./zkid/wallet-unit-poc/ecdsa-spartan2/README.md) for test instructions.
+See [`zkid/wallet-unit-poc/ecdsa-spartan2/README.md`](https://github.com/privacy-ethereum/zkID/blob/RSA-X.509-Cert/wallet-unit-poc/ecdsa-spartan2/README.md) for test instructions.
 
 ### 4. Start the Verifier Server
 
@@ -203,7 +203,7 @@ See [`zkid/wallet-unit-poc/ecdsa-spartan2/README.md`](./zkid/wallet-unit-poc/ecd
 cd go-zkid-verifier
 ```
 
-See [`go-zkid-verifier/README.md`](./go-zkid-verifier/README.md) for configuration and launch instructions.
+See [`go-zkid-verifier/README.md`](https://github.com/privacy-ethereum/go-zkid-verifier/blob/main/README.md) for configuration and launch instructions.
 
 ### 5. Run the Mobile App
 
@@ -213,7 +213,7 @@ See [`go-zkid-verifier/README.md`](./go-zkid-verifier/README.md) for configurati
 cd OpenACExampleApp
 ```
 
-See [`OpenACExampleApp/README.md`](./OpenACExampleApp/README.md) for Xcode setup and simulator/device instructions.
+See [`OpenACExampleApp/README.md`](https://github.com/privacy-ethereum/OpenACExampleApp/blob/main/README.md) for Xcode setup and simulator/device instructions.
 
 **Android:**
 
@@ -221,4 +221,4 @@ See [`OpenACExampleApp/README.md`](./OpenACExampleApp/README.md) for Xcode setup
 cd OpenACAndroidExample
 ```
 
-See [`OpenACAndroidExample/README.md`](./OpenACAndroidExample/README.md) for Android Studio setup and emulator/device instructions.
+See [`OpenACAndroidExample/README.md`](https://github.com/privacy-ethereum/OpenACAndroidExample/blob/main/README.md) for Android Studio setup and emulator/device instructions.
