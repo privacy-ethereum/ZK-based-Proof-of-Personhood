@@ -4,19 +4,19 @@
 	branch = RSA-X.509-Cert
 [submodule "go-zkid-verifier"]
 	path = go-zkid-verifier
-	url = https://github.com/zkmopro/go-zkid-verifier
+	url = https://github.com/privacy-ethereum/go-zkid-verifier
 [submodule "moica-revocation-smt"]
 	path = moica-revocation-smt
 	url = https://github.com/moven0831/moica-revocation-smt
 [submodule "OpenACSwift"]
 	path = OpenACSwift
-	url = https://github.com/zkmopro/OpenACSwift
+	url = https://github.com/privacy-ethereum/OpenACSwift
 [submodule "OpenACKotlin"]
 	path = OpenACKotlin
-	url = https://github.com/zkmopro/OpenACKotlin
+	url = https://github.com/privacy-ethereum/OpenACKotlin
 [submodule "OpenACExampleApp"]
 	path = OpenACExampleApp
-	url = https://github.com/zkmopro/OpenACExampleApp
+	url = https://github.com/privacy-ethereum/OpenACExampleApp
 [submodule "OpenACAndroidExample"]
 	path = OpenACAndroidExample
-	url = https://github.com/zkmopro/OpenACAndroidExample
+	url = https://github.com/privacy-ethereum/OpenACAndroidExample
