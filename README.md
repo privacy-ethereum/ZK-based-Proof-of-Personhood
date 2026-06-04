@@ -153,7 +153,7 @@ go-zkid-verifier
 
 To adapt this integration for a non-PTT relying party:
 
-1. **Circuits** — use `zkid` unchanged; verifying keys are published on [zkID releases](https://github.com/privacy-ethereum/zkID/releases/tag/latest).
+1. **Circuits** — use `zkid` unchanged; verifying keys are published on [zkID releases](https://github.com/zkmopro/zkID/releases/tag/latest).
 2. **Mobile bindings** — add `OpenACSwift` (SPM) or `OpenACKotlin` (JitPack) as dependencies if your identity scheme is x509 certificate-based; call `generateCertChainRs4096Input → setupKeys → prove* → linkVerify`. If your circuits differ from the x509 cert design, regenerate the bindings via mopro against your own circuit artifacts.
 3. **Revocation** — consume the [moica-revocation-smt](https://github.com/moven0831/moica-revocation-smt) REST/gRPC proof API, or load a binary snapshot locally (WASM / iOS / Android).
 4. **Backend verifier** — deploy `go-zkid-verifier` with `APP_ID` set to your relying-party identifier (31-char hex); wire `linkverify.Service` into your own transport or use the bundled HTTP/gRPC server.
@@ -163,10 +163,10 @@ To adapt this integration for a non-PTT relying party:
 
 ## Getting Started
 
-Clone with all submodules:
+### Clone
 
 ```bash
-git clone --recurse-submodules https://github.com/YOUR_ORG/ZK-based-Human-Verification.git
+git clone --recurse-submodules https://github.com/privacy-ethereum/ZK-based-Proof-of-Personhood.git
 ```
 
 If already cloned:
@@ -175,12 +175,49 @@ If already cloned:
 git submodule update --init --recursive
 ```
 
-See each submodule's `README.md` for build and deployment instructions:
+### 1. Install Prerequisites
 
-- [`zkid/README.md`](./zkid/README.md)
-- [`go-zkid-verifier/README.md`](./go-zkid-verifier/README.md)
-- [`moica-revocation-smt/README.md`](./moica-revocation-smt/README.md)
-- [`OpenACSwift/README.md`](./OpenACSwift/README.md)
-- [`OpenACKotlin/README.md`](./OpenACKotlin/README.md)
-- [`OpenACExampleApp/README.md`](./OpenACExampleApp/README.md)
-- [`OpenACAndroidExample/README.md`](./OpenACAndroidExample/README.md)
+- **Rust** — https://rustup.rs
+- **Circom** — https://docs.circom.io/getting-started/installation/
+
+### 2. Compile Circuits
+
+```bash
+cd zkid/wallet-unit-poc/circom
+```
+
+See [`zkid/wallet-unit-poc/circom/README.md`](./zkid/wallet-unit-poc/circom/README.md) for full compilation instructions.
+
+### 3. Run E2E Tests
+
+```bash
+cd zkid/wallet-unit-poc/ecdsa-spartan2
+```
+
+See [`zkid/wallet-unit-poc/ecdsa-spartan2/README.md`](./zkid/wallet-unit-poc/ecdsa-spartan2/README.md) for test instructions.
+
+### 4. Start the Verifier Server
+
+```bash
+cd go-zkid-verifier
+```
+
+See [`go-zkid-verifier/README.md`](./go-zkid-verifier/README.md) for configuration and launch instructions.
+
+### 5. Run the Mobile App
+
+**iOS:**
+
+```bash
+cd OpenACExampleApp
+```
+
+See [`OpenACExampleApp/README.md`](./OpenACExampleApp/README.md) for Xcode setup and simulator/device instructions.
+
+**Android:**
+
+```bash
+cd OpenACAndroidExample
+```
+
+See [`OpenACAndroidExample/README.md`](./OpenACAndroidExample/README.md) for Android Studio setup and emulator/device instructions.
