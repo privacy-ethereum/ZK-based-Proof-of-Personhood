@@ -18,7 +18,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Fetch latest submodule commits
-        run: git submodule update --remote
+        run: |
+          git submodule foreach 'git fetch origin'
+          git submodule update --remote
 
       - name: Sync README pinned commits
         run: |
