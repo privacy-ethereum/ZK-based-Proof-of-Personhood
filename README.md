@@ -33,7 +33,7 @@ The table below labels each functional piece, its submodule, and whether it is a
 | **Proof generation — iOS** (Swift FFI + on-device proving, x509 cert circuits) | `OpenACSwift/` | Reusable for any x509 certificate-based identity scheme using the same circuits |
 | **Proof generation — Android** (Kotlin/JNI FFI + on-device proving, x509 cert circuits) | `OpenACKotlin/` | Reusable for any x509 certificate-based identity scheme using the same circuits |
 | **Proof verification** (Rust FFI → Go, Spartan2 verifier) | `go-zkid-verifier/verifier/` | Reusable — exposes `linkverify.Service` for any backend |
-| **Nullifier generation** (derived inside `device_sig` circuit from `APP_ID` + cardholder key) | `zkid/wallet-unit-poc/circom/` | Reusable design; `APP_ID` is per–relying party |
+| **Nullifier generation** (derived inside `user_sig` circuit from `APP_ID` + cardholder key) | `zkid/wallet-unit-poc/circom/` | Reusable design; `APP_ID` is per–relying party |
 | **Challenge / nonce handling** (per-session 254-bit field element, 5-min TTL, replay protection) | `go-zkid-verifier/challenge/` + `httpapi/challenge.go` | Reusable pattern; `APP_ID` is PTT-specific |
 | **Revocation SMT — server** (CRL fetch, Poseidon SMT, REST/gRPC proofs, on-chain root posting) | `moica-revocation-smt/server/` | Reusable — any MOICA-issuer integration |
 | **Revocation SMT — client** (offline snapshot + proof generation, iOS/Android/WASM) | `moica-revocation-smt/` + `OpenACSwift/` | Reusable — any mobile or web client using MOICA |
@@ -56,7 +56,7 @@ The table below labels each functional piece, its submodule, and whether it is a
 │  ┌─────────────────────────────────────────────────────────┐   │
 │  │              zkid  (ZK circuit core)                    │   │
 │  │  cert_chain_rs4096   ──┐  Circom circuits               │   │
-│  │  device_sig_rs2048   ──┤  Spartan2 + Hyrax              │   │
+│  │  user_sig_rs2048     ──┤  Spartan2 + Hyrax              │   │
 │  │                         └→ nullifier derived here       │   │
 │  └─────────────────────────────────────────────────────────┘   │
 │                                                                 │
@@ -94,7 +94,7 @@ The table below labels each functional piece, its submodule, and whether it is a
 ```
 
 **Boundary summary:**
-- Everything above the "PTT-SPECIFIC INTEGRATION" line is reusable by any relying party implementing OpenAC, with one caveat: `OpenACSwift` and `OpenACKotlin` are built for x509 certificate-based identity circuits (`cert_chain_rs4096`, `device_sig_rs2048`). They are drop-in reusable for any x509 cert scheme; for other circuit designs the mobile bindings must be regenerated via mopro.
+- Everything above the "PTT-SPECIFIC INTEGRATION" line is reusable by any relying party implementing OpenAC, with one caveat: `OpenACSwift` and `OpenACKotlin` are built for x509 certificate-based identity circuits (`cert_chain_rs4096`, `user_sig_rs2048`). They are drop-in reusable for any x509 cert scheme; for other circuit designs the mobile bindings must be regenerated via mopro.
 - The PTT-specific surface is narrow: the `APP_ID` env var, the SQLite deduplication store, and the HTTP/gRPC transport wiring. Swapping these out adapts the verifier to a different service.
 
 ---
@@ -103,7 +103,7 @@ The table below labels each functional piece, its submodule, and whether it is a
 
 | Submodule | Role | Upstream | Pinned commit |
 |-----------|------|----------|---------------|
-| [zkid](https://github.com/privacy-ethereum/zkID/tree/RSA-X.509-Cert) | ZK circuits (`cert_chain_rs4096`, `device_sig_rs2048`), Spartan2/Hyrax prover, Circom witness calculator | [PSE zkID](https://github.com/privacy-ethereum/zkID) | [`36bcdd4`](https://github.com/privacy-ethereum/zkID/commit/36bcdd4529e89e9d4828ea81f333797b58a85797) |
+| [zkid](https://github.com/privacy-ethereum/zkID/tree/RSA-X.509-Cert) | ZK circuits (`cert_chain_rs4096`, `user_sig_rs2048`), Spartan2/Hyrax prover, Circom witness calculator | [PSE zkID](https://github.com/privacy-ethereum/zkID) | [`36bcdd4`](https://github.com/privacy-ethereum/zkID/commit/36bcdd4529e89e9d4828ea81f333797b58a85797) |
 | [go-zkid-verifier](https://github.com/privacy-ethereum/go-zkid-verifier) | Go backend: challenge/nonce, ZK proof verification (FFI → Rust), nullifier dedup, SMT root and issuer-cert trust checks | — | [`fc4f458`](https://github.com/privacy-ethereum/go-zkid-verifier/commit/fc4f458b89b119aefe2121ae686da941f5721cbf) |
 | [moica-revocation-smt](https://github.com/privacy-ethereum/moica-revocation-smt) | MOICA CRL → Poseidon SMT → REST/gRPC proofs → on-chain root (Arbitrum Sepolia `0xc461…AFFA`); binary snapshots for offline client use | — | [`f7acf5f`](https://github.com/privacy-ethereum/moica-revocation-smt/commit/f7acf5fb4962c5ec38e859493b508302b972eabd) |
 | [OpenACSwift](https://github.com/privacy-ethereum/OpenACSwift) | Swift package (iOS 16+): on-device proof generation for x509 cert circuits (`proveCertChainRs4096`, `proveUserSigRs2048`), offline SMT revocation check, circuit-input preparation. Reusable by any iOS app built around an x509 certificate-based identity scheme. | [mopro](https://github.com/zkmopro/mopro) | [`13e0646`](https://github.com/privacy-ethereum/OpenACSwift/commit/13e06467c2112f32716b1a665a8a6b86be8a0786) |
@@ -122,7 +122,7 @@ Mobile app
   3. Call GET /challenge on go-zkid-verifier → receive {challenge, app_id}
   4. Generate ZK proof on-device (OpenACSwift / OpenACKotlin)
        - cert_chain_rs4096: proves cert was signed by MOICA-G2/G3 and is not revoked (SMT non-membership)
-       - device_sig_rs2048: proves user signed app_id with the device key; derives nullifier
+       - user_sig_rs2048: proves user signed app_id with the user key; derives nullifier
   5. POST /link-verify {cert_chain_proof, user_sig_proof}
 
 go-zkid-verifier
