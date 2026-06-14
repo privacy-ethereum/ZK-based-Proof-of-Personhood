@@ -7,7 +7,7 @@
 	url = https://github.com/privacy-ethereum/go-zkid-verifier
 [submodule "moica-revocation-smt"]
 	path = moica-revocation-smt
-	url = https://github.com/moven0831/moica-revocation-smt
+	url = https://github.com/privacy-ethereum/moica-revocation-smt
 [submodule "OpenACSwift"]
 	path = OpenACSwift
 	url = https://github.com/privacy-ethereum/OpenACSwift
