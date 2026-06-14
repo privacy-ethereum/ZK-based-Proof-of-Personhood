@@ -1,6 +1,6 @@
 # ZK-based Proof of Personhood for Online Forum
 
-A proof-of-concept for ZK-based proof of personhood on BBS (Bulletin Board System) platforms — specifically PTT — using [OpenAC / zkID](https://github.com/privacy-ethereum/zkID/blob/main/paper/zkID.pdf) and Taiwan's mobile citizenship certificate (MOICA).
+A proof-of-concept for ZK-based proof of personhood on online forum platforms — specifically PTT — using [OpenAC / zkID](https://github.com/privacy-ethereum/zkID/blob/main/paper/zkID.pdf) and Taiwan's mobile citizenship certificate (MOICA).
 
 > For flow diagrams and architecture decisions, see [ARCHITECTURE.md](./ARCHITECTURE.md).
 > For the formal ZK proof-of-personhood specification (circuit design, public inputs, nullifier scheme, and security properties), see the [spec](https://github.com/privacy-ethereum/zkID/tree/main/specs/2-zk-proof-of-personhood).
@@ -41,7 +41,7 @@ The table below labels each functional piece, its submodule, and whether it is a
 | **Revocation root cache** (on-chain primary → GitHub-release fallback, background refresh) | `go-zkid-verifier/smtroot/` | Reusable — decoupled provider interface |
 | **Issuer cert trust** (MOICA-G2/G3 moduli, embedded + HTTPS refresh, GRCA chain-validate) | `go-zkid-verifier/issuercert/` | Reusable — applicable to any MOICA verifier |
 | **PTT backend integration** (HTTP/gRPC server, `link-verify` endpoint, SQLite deduplication) | `go-zkid-verifier/httpapi/` + `grpc/` + `store/` | PTT-specific deployment; core logic is reusable |
-| **Mobile app integration** (BBS app fetches MOICA cert, wraps VC, calls Swift/Kotlin FFI) | `OpenACSwift/` + `OpenACKotlin/` | Reusable for any x509 cert-based identity scheme; PTT app shell is PTT-specific |
+| **Mobile app integration** (online forum app fetches MOICA cert, wraps VC, calls Swift/Kotlin FFI) | `OpenACSwift/` + `OpenACKotlin/` | Reusable for any x509 cert-based identity scheme; PTT app shell is PTT-specific |
 | **iOS example app** (full end-to-end demo: TW FidO auth → circuit download → ZK prove → link-verify) | `OpenACExampleApp/` | Reusable reference implementation for any OpenAC iOS integration |
 | **Android example app** (full end-to-end demo: TW FidO auth → circuit download → ZK prove → link-verify) | `OpenACAndroidExample/` | Reusable reference implementation for any OpenAC Android integration |
 
@@ -132,7 +132,7 @@ go-zkid-verifier
   9. Check app_id matches configured PTT APP_ID
   10. Check challenge matches issued nonce (anti-replay)
   11. Check nullifier is not already recorded (one-time-per-credential)
-  12. Return {verified: true, nullifier} → BBS server marks user as personhood-verified
+  12. Return {verified: true, nullifier} → online forum server marks user as personhood-verified
 ```
 
 ---
@@ -159,7 +159,7 @@ To adapt this integration for a non-PTT relying party:
 2. **Mobile bindings** — add `OpenACSwift` (SPM) or `OpenACKotlin` (JitPack) as dependencies if your identity scheme is x509 certificate-based; call `generateCertChainRs4096Input → setupKeys → prove* → linkVerify`. If your circuits differ from the x509 cert design, regenerate the bindings via mopro against your own circuit artifacts.
 3. **Revocation** — consume the [moica-revocation-smt](https://github.com/privacy-ethereum/moica-revocation-smt) REST/gRPC proof API, or load a binary snapshot locally (WASM / iOS / Android).
 4. **Backend verifier** — deploy `go-zkid-verifier` with `APP_ID` set to your relying-party identifier (31-char hex); wire `linkverify.Service` into your own transport or use the bundled HTTP/gRPC server.
-5. **What to change** — only `APP_ID`, your session store backend, and any BBS-specific user-DB update logic. The ZK circuit, mobile bindings, and SMT infrastructure are drop-in.
+5. **What to change** — only `APP_ID`, your session store backend, and any online-forum-specific user-DB update logic. The ZK circuit, mobile bindings, and SMT infrastructure are drop-in.
 
 ---
 
