@@ -8,15 +8,21 @@
 [submodule "moica-revocation-smt"]
 	path = moica-revocation-smt
 	url = https://github.com/privacy-ethereum/moica-revocation-smt
-[submodule "OpenACSwift"]
-	path = OpenACSwift
-	url = https://github.com/privacy-ethereum/OpenACSwift
-[submodule "OpenACKotlin"]
-	path = OpenACKotlin
-	url = https://github.com/privacy-ethereum/OpenACKotlin
-[submodule "OpenACExampleApp"]
-	path = OpenACExampleApp
-	url = https://github.com/privacy-ethereum/OpenACExampleApp
-[submodule "OpenACAndroidExample"]
-	path = OpenACAndroidExample
-	url = https://github.com/privacy-ethereum/OpenACAndroidExample
+[submodule "openac-rsa-x509-swift"]
+	path = openac-rsa-x509-swift
+	url = https://github.com/privacy-ethereum/openac-rsa-x509-swift
+[submodule "openac-rsa-x509-kotlin"]
+	path = openac-rsa-x509-kotlin
+	url = https://github.com/privacy-ethereum/openac-rsa-x509-kotlin
+[submodule "openac-rsa-x509-js"]
+	path = openac-rsa-x509-js
+	url = https://github.com/privacy-ethereum/openac-rsa-x509-js
+[submodule "openac-taiwan-citizen-digital-certificate-ios-example"]
+	path = openac-taiwan-citizen-digital-certificate-ios-example
+	url = https://github.com/privacy-ethereum/openac-taiwan-citizen-digital-certificate-ios-example
+[submodule "openac-taiwan-citizen-digital-certificate-android-example"]
+	path = openac-taiwan-citizen-digital-certificate-android-example
+	url = https://github.com/privacy-ethereum/openac-taiwan-citizen-digital-certificate-android-example
+[submodule "openac-taiwan-citizen-digital-certificate-web-example"]
+	path = openac-taiwan-citizen-digital-certificate-web-example
+	url = https://github.com/privacy-ethereum/openac-taiwan-citizen-digital-certificate-web-example
